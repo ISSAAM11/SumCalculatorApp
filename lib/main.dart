@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sum_calculator/colors.dart';
 import 'package:sum_calculator/model/sumItem.dart';
@@ -19,14 +20,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: yellowColor),
-        useMaterial3: true,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: yellowColor),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false, // Disable the debug banner
+        home: const InitialScreen(),
       ),
-      debugShowCheckedModeBanner: false, // Disable the debug banner
-      home: const InitialScreen(),
     );
   }
 }

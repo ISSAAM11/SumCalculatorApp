@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InsertProductsItem extends StatefulWidget {
-  Map productList;
+  List<Map<String, dynamic>> productList;
   InsertProductsItem({super.key, required this.productList});
 
   @override
@@ -49,8 +50,11 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
 
       if (product["name"]!.text.isNotEmpty &&
           product["price"]!.text.isNotEmpty) {
-        widget.productList[product["name"]!.text] =
-            double.parse(product["price"]!.text);
+        widget.productList.add({
+          "name": product["name"]!.text,
+          "price": double.parse(product["price"]!.text),
+        });
+        //[product["name"]!.text] = double.parse(product["price"]!.text)
       }
     }
     setState(() {});
@@ -59,25 +63,40 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const SizedBox(height: 10),
-      const Text(
+      SizedBox(height: 10.h),
+      Text(
         "Insert your product list",
-        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
       ),
-      const SizedBox(height: 5),
+      SizedBox(height: 5.h),
+      Row(
+        children: [
+          SizedBox(
+            width: 190.w,
+            child: Text(
+              "Name",
+              style: TextStyle(fontSize: 15.sp, color: Colors.black38),
+            ),
+          ),
+          Text(
+            "Prise",
+            style: TextStyle(fontSize: 15.sp, color: Colors.black38),
+          ),
+        ],
+      ),
       SizedBox(
-        height: 45 * productsListLength.toDouble() - 40,
+        height: 50.h * productsListLength.toDouble() - 50.h,
         child: ListView.builder(
           itemCount: productsControllerList.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 5),
+              padding: EdgeInsets.only(bottom: 5.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 200.0,
-                    height: 40.0,
+                    width: 160.w,
+                    height: 45.h,
                     child: TextFormField(
                       onChanged: updateProductList,
                       controller: productsControllerList[index]["name"],
@@ -88,8 +107,8 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
                     ),
                   ),
                   SizedBox(
-                    width: 200.0,
-                    height: 40.0,
+                    width: 160.w,
+                    height: 45.h,
                     child: TextFormField(
                       onChanged: updateProductList,
                       controller: productsControllerList[index]["price"],
@@ -113,8 +132,8 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: Text("=  ${sum.toString()} \$",
-            style: const TextStyle(fontSize: 15)),
+        child:
+            Text("=  ${sum.toString()} \$", style: TextStyle(fontSize: 15.sp)),
       ),
       Align(
         alignment: Alignment.centerRight,
@@ -122,7 +141,7 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
             onPressed: () {
               addProduct();
             },
-            child: const Text("+")),
+            child: Text("+ add", style: TextStyle(fontSize: 15.sp))),
       ),
     ]);
   }

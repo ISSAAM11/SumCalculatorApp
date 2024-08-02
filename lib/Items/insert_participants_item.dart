@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InsertParticipantsItem extends StatefulWidget {
-  Map participantsList;
+  List<Map<String, dynamic>> participantsList;
 
   InsertParticipantsItem({super.key, required this.participantsList});
 
@@ -59,8 +60,10 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
 
       if (participant["name"]!.text.isNotEmpty &&
           participant["price"]!.text.isNotEmpty) {
-        widget.participantsList[participant["name"]!.text] =
-            double.parse(participant["price"]!.text);
+        widget.participantsList.add({
+          "participant": participant["name"]!.text,
+          "price": double.parse(participant["price"]!.text)
+        });
       }
     }
     setState(() {});
@@ -69,40 +72,39 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text(
+      Text(
         "Insert participants",
-        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
       ),
-      const SizedBox(height: 5),
-      const Row(
+      SizedBox(height: 5.h),
+      Row(
         children: [
           SizedBox(
-            width: 270,
+            width: 190.w,
             child: Text(
               "Name",
-              style: TextStyle(fontSize: 15, color: Colors.black38),
+              style: TextStyle(fontSize: 15.sp, color: Colors.black38),
             ),
           ),
           Text(
             "Prise",
-            style: TextStyle(fontSize: 15, color: Colors.black38),
+            style: TextStyle(fontSize: 15.sp, color: Colors.black38),
           ),
         ],
       ),
-      const SizedBox(height: 5),
       SizedBox(
-        height: 45 * participantsListLength.toDouble() - 40,
+        height: 50.h * participantsListLength.toDouble() - 50.h,
         child: ListView.builder(
           itemCount: particiapntsControllerList.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 5),
+              padding: EdgeInsets.only(bottom: 5.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 200.0,
-                    height: 40.0,
+                    width: 160.w,
+                    height: 45.h,
                     child: TextFormField(
                       onChanged: updateParticipantsList,
                       controller: particiapntsControllerList[index]["name"],
@@ -113,8 +115,8 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
                     ),
                   ),
                   SizedBox(
-                    width: 200.0,
-                    height: 40.0,
+                    width: 160.w,
+                    height: 45.h,
                     child: TextFormField(
                       onChanged: updateParticipantsList,
                       controller: particiapntsControllerList[index]["price"],
@@ -138,8 +140,8 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: Text("=  ${sum.toString()} \$",
-            style: const TextStyle(fontSize: 15)),
+        child:
+            Text("=  ${sum.toString()} \$", style: TextStyle(fontSize: 15.sp)),
       ),
       Align(
         alignment: Alignment.centerRight,
@@ -147,7 +149,7 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
             onPressed: () {
               addParticipant();
             },
-            child: const Text("+")),
+            child: Text("+ add", style: TextStyle(fontSize: 15.sp))),
       ),
     ]);
   }

@@ -1,75 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:sum_calculator/Colors.dart';
+import 'package:sum_calculator/colors.dart';
 
 class ResultItem extends StatelessWidget {
-  const ResultItem({super.key});
+  List participantsMap;
+
+  ResultItem({super.key, required this.participantsMap});
+  int sum = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Your participants list ',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RichText(
-                text: const TextSpan(
-                    text: "Issam should ",
-                    style: TextStyle(color: Colors.black),
+    for (var participant in participantsMap) {
+      sum += participant['price'] as int;
+    }
+    return SizedBox(
+      height: participantsMap.length * 20 + 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Your participants list ',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 15),
+          Flexible(
+            child: ListView.builder(
+              itemCount: participantsMap.length,
+              itemBuilder: (context, index) {
+                final participantAmount = (sum / participantsMap.length -
+                    participantsMap[index]['price']);
+                return SizedBox(
+                  height: 22,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                  TextSpan(
-                      text: "add ",
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w800)),
-                  TextSpan(text: "8 \$")
-                ])),
-            RichText(
-                text: const TextSpan(
-                    text: "12 ",
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                  TextSpan(
-                      text: "+ 8 ",
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w800)),
-                  TextSpan(text: "= 20 \$")
-                ])),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RichText(
-                text: const TextSpan(
-                    text: "Salim should ",
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                  TextSpan(
-                      text: "have ",
-                      style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.w800)),
-                  TextSpan(text: "8 \$")
-                ])),
-            RichText(
-                text: const TextSpan(
-                    text: "28 ",
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                  TextSpan(
-                      text: "+ 8 ",
-                      style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.w800)),
-                  TextSpan(text: "= 20 \$")
-                ])),
-          ],
-        ),
-        const SizedBox(height: 25)
-      ],
+                      RichText(
+                        text: TextSpan(
+                          text: "${participantsMap[index]['participant']} ",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            const TextSpan(
+                                text: "should ",
+                                style: TextStyle(fontWeight: FontWeight.w500)),
+                            TextSpan(
+                                text: participantAmount > 0 ? "add " : "get ",
+                                style: TextStyle(
+                                    color: participantAmount > 0
+                                        ? Colors.red
+                                        : yellowColor,
+                                    fontWeight: FontWeight.w800)),
+                            TextSpan(
+                              text:
+                                  "${participantAmount.abs().toStringAsFixed(1)} \$",
+                            )
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: "${participantsMap[index]['price']}  ",
+                          style: const TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: participantAmount > 0
+                                    ? "+  ${participantAmount.toStringAsFixed(1)}"
+                                    : "-  ${participantAmount.abs().toStringAsFixed(1)}",
+                                style: TextStyle(
+                                    color: participantAmount > 0
+                                        ? Colors.red
+                                        : yellowColor,
+                                    fontWeight: FontWeight.w800)),
+                            TextSpan(text: "  =  $sum \$")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
     );
   }
 }

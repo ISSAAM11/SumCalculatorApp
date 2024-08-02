@@ -2,63 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:sum_calculator/Colors.dart';
 
 class YourParticipantsItem extends StatelessWidget {
-  const YourParticipantsItem({super.key});
+  List participantsMap;
+  YourParticipantsItem({super.key, required this.participantsMap});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Your participants list ',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-        const SizedBox(
-          height: 10,
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Name", style: TextStyle(color: Colors.black45)),
-            Text("Sum", style: TextStyle(color: Colors.black45))
-          ],
-        ),
-        const SizedBox(height: 5),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text("Meat 0.5 Kg"), Text("22 \$")],
-        ),
-        const SizedBox(height: 5),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text("Legume"), Text("18 \$")],
-        ),
-        const SizedBox(height: 5),
-        const Align(
-          alignment: Alignment.centerRight,
-          child: Text("=  40 \$"),
-        ),
-        const SizedBox(height: 5),
-        Align(
-          alignment: Alignment.centerRight,
-          child: RichText(
-            text: const TextSpan(
-                text: "40 / 2 ",
-                style: TextStyle(
+    int sum = 0;
+    for (var participant in participantsMap) {
+      sum += participant['price'] as int;
+    }
+    return SizedBox(
+      height: participantsMap.length * 20 + 120,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Your participants list ',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Name", style: TextStyle(color: Colors.black45)),
+              Text("Sum", style: TextStyle(color: Colors.black45))
+            ],
+          ),
+          const SizedBox(height: 5),
+          Flexible(
+            child: ListView.builder(
+              itemCount: participantsMap.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(participantsMap.elementAt(index)["participant"]),
+                    Text("${participantsMap.elementAt(index)["price"]} \$")
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 5),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text("=  $sum \$"),
+          ),
+          const SizedBox(height: 5),
+          Align(
+            alignment: Alignment.centerRight,
+            child: RichText(
+              text: TextSpan(
+                text: "$sum \$ / ${participantsMap.length} participants ",
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
                 ),
                 children: [
                   TextSpan(
-                    text: "= 20 \$ each one ",
-                    style: TextStyle(
+                    text:
+                        "= ${(sum / participantsMap.length).toStringAsFixed(1)} \$ each one",
+                    style: const TextStyle(
                       color: yellowColor,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
                     ),
                   )
-                ]),
+                ],
+              ),
+            ),
           ),
-        ),
-        const Divider(),
-      ],
+          const Divider(),
+        ],
+      ),
     );
   }
 }

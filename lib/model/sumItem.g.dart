@@ -18,8 +18,12 @@ class SumItemAdapter extends TypeAdapter<SumItem> {
     };
     return SumItem(
       title: fields[0] as String,
-      productsMap: (fields[1] as Map).cast<String, double>(),
-      participantsMap: (fields[2] as Map).cast<String, double>(),
+      productsMap: (fields[1] as List)
+          .map((dynamic e) => (e as Map).cast<String, dynamic>())
+          .toList(),
+      participantsMap: (fields[2] as List)
+          .map((dynamic e) => (e as Map).cast<String, dynamic>())
+          .toList(),
     );
   }
 

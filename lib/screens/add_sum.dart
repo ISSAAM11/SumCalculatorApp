@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:sum_calculator/Colors.dart';
 import 'package:sum_calculator/Items/insert_participants_item.dart';
 import 'package:sum_calculator/Items/insert_products_item%20copy.dart';
@@ -16,35 +17,25 @@ class AddSum extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<AddSum> {
-  List<String> sumList = [];
   TextEditingController titleController = TextEditingController();
-  Map<String, dynamic> sumItem = {};
+  List<Map<String, dynamic>> productList = [];
+  List<Map<String, dynamic>> participantsList = [];
+  String textError = "";
+  late SumItem sumItem;
   void createSumItem() {
-    // final sumItem = SumItem(
-    //   title: titleController.text,
-    //   productsMap: {
-    //     productNameCtl.text: double.parse(priceAmountCtl.text),
-    //   },
-    //   participantsMap: {participantCtl.text: 10},
-    // );
-    // final sumItemsList = Boxes.getSumItems();
-    // sumItemsList.add(sumItem);
-    /* final myList = sumItemsList.values.toList();
-    myList.forEach((item) {
-      debugPrint('title: ${item.title}, productsMap: ${item.productsMap}');
-    });
-*/
-    //print("sumItemsList.length: " + sumItemsList.length.toString());
-  }
-
-  Map<String, double> productList = {};
-  Map<String, double> participantsList = {};
-  createSum() {
-    Map<String, dynamic> sumItem = {
-      "title": titleController.text,
-      "productList": productList,
-      "participantList": participantsList,
-    };
+    if (titleController.text.isEmpty) {
+      textError = "You must add a title";
+      setState(() {});
+      return;
+    }
+    sumItem = SumItem(
+      title: titleController.text,
+      productsMap: productList,
+      participantsMap: participantsList,
+    );
+    final sumBox = Boxes.getSumItems();
+    sumBox.add(sumItem);
+    GoRouter.of(context).go('/SumResult', extra: sumItem);
   }
 
   @override
@@ -76,25 +67,33 @@ class _MyWidgetState extends State<AddSum> {
               const Text('Title: ',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 40.0,
+                height: 45.0,
                 child: TextFormField(
                   controller: titleController,
+                  onChanged: (value) => {
+                    setState(() {
+                      textError = "";
+                    })
+                  },
                   decoration: const InputDecoration(
-                    labelText: "Write here",
                     border: OutlineInputBorder(),
+                    hintText: 'Write here',
                   ),
                 ),
               ),
               InsertProductsItem(productList: productList),
               InsertParticipantsItem(participantsList: participantsList),
-              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.center,
+                child: Text(textError,
+                    style: const TextStyle(fontSize: 15, color: Colors.red)),
+              ),
+              SizedBox(height: 5),
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () {
                       createSumItem();
-//                    GoRouter.of(context).go('/SumResult');
-//                    saveValue(titleController.text);
                     },
                     child: const Text("Calculate Sum")),
               ),

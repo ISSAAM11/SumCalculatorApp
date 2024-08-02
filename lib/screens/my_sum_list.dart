@@ -1,6 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:sum_calculator/Colors.dart';
+import 'package:sum_calculator/boxes/Boxes.dart';
+import 'package:sum_calculator/model/sumItem.dart';
 import 'package:sum_calculator/screens/add_sum.dart';
 
 class MySumList extends StatefulWidget {
@@ -11,6 +16,8 @@ class MySumList extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MySumList> {
+  final sumBox = Boxes.getSumItems();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +66,22 @@ class _MyWidgetState extends State<MySumList> {
               const SizedBox(height: 10),
               const Divider(),
               const SizedBox(height: 10),
-              sumList('Dinner hamburger', '50 \$'),
-              sumList("Dinner spaghetti", '70 \$'),
-              sumList("Fast food", '120 \$'),
-              sumList("Mountain Trip", '240 \$'),
+              SizedBox(
+                width: double.infinity,
+                height: 5000,
+                child: ValueListenableBuilder<Box<SumItem>>(
+                  valueListenable: Boxes.getSumItems().listenable(),
+                  builder: (context, box, _) {
+                    final sumList = box.values.toList().cast<SumItem>();
+                    return ListView.builder(
+                      itemCount: box.length,
+                      itemBuilder: (context, index) {
+                        return sumListContainer(sumList[index], context);
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -71,32 +90,44 @@ class _MyWidgetState extends State<MySumList> {
   }
 }
 
-Container sumList(String titleSum, String price) {
-  return Container(
-    padding: const EdgeInsets.all(10),
-    width: 1000,
-    margin: const EdgeInsets.only(bottom: 15),
-    height: 80,
-    color: const Color.fromARGB(255, 243, 243, 243),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(titleSum.toString(),
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Text(price.toString(),
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-          ],
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text("Members: 5"), Text("12/05/2024")],
-        ),
-      ],
+GestureDetector sumListContainer(SumItem sumItem, BuildContext context) {
+  double sumCount = 0;
+  for (Map product in sumItem.productsMap) {
+    sumCount += product["price"];
+  }
+  return GestureDetector(
+    onTap: () {
+      GoRouter.of(context).go('/SumResult', extra: sumItem);
+    },
+    child: Container(
+      padding: const EdgeInsets.all(10),
+      width: 1000,
+      margin: const EdgeInsets.only(bottom: 15),
+      height: 80,
+      color: const Color.fromARGB(255, 243, 243, 243),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(sumItem.title.toString(),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("${sumCount.toString()} \$",
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Members: ${sumItem.participantsMap.length}"),
+              const Text("12/05/2024")
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

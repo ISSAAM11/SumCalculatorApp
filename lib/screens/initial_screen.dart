@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sum_calculator/model/sumItem.dart';
 import 'package:sum_calculator/screens/add_sum.dart';
 import 'package:sum_calculator/screens/my_sum_list.dart';
 import 'package:sum_calculator/screens/sum_result.dart';
@@ -27,7 +28,7 @@ class _MyWidgetState extends State<InitialScreen> {
   }
 
   final GoRouter _router = GoRouter(
-    initialLocation: '/AddSum',
+    initialLocation: '/',
     routes: <RouteBase>[
       GoRoute(
         path: '/',
@@ -44,7 +45,8 @@ class _MyWidgetState extends State<InitialScreen> {
       GoRoute(
         path: '/SumResult',
         builder: (BuildContext context, GoRouterState state) {
-          return const SumResult();
+          final sumItem = state.extra as SumItem;
+          return SumResult(sumItem: sumItem);
         },
       ),
     ],
