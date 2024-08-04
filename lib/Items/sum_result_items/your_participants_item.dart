@@ -7,9 +7,9 @@ class YourParticipantsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int sum = 0;
+    double sum = 0;
     for (var participant in participantsMap) {
-      sum += participant['price'] as int;
+      sum += participant['price'];
     }
     return SizedBox(
       height: participantsMap.length * 20 + 120,
@@ -38,7 +38,7 @@ class YourParticipantsItem extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(participantsMap.elementAt(index)["participant"]),
+                    Text(participantsMap.elementAt(index)["name"]),
                     Text("${participantsMap.elementAt(index)["price"]} \$")
                   ],
                 );

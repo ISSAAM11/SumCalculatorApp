@@ -10,31 +10,18 @@ class SumItem extends HiveObject {
   final List<Map<String, dynamic>> productsMap;
   @HiveField(2)
   final List<Map<String, dynamic>> participantsMap;
+  @HiveField(3)
+  final DateTime date;
 
   SumItem({
     required this.title,
     required this.productsMap,
     required this.participantsMap,
+    required this.date,
   });
 
   @override
   String toString() {
     return 'Product{title: $title, productsMap: $productsMap, participantsMap: $participantsMap}';
   }
-
-/*
-  Map<String, dynamic> toMap() {
-    return {
-      'title': title,
-      'productsList': productsList,
-    };
-  }
-
-  factory SumItem.fromMap(Map<String, dynamic> map) {
-    return SumItem(
-      title: map['title'] as String,
-      productsList: map['productsList'] as Map<String, double>,
-    );
-  }
-*/
 }

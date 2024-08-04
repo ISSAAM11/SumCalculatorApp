@@ -7,9 +7,9 @@ class YourProductsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int sum = 0;
+    double sum = 0;
     for (var product in productsMap) {
-      sum += product['price'] as int;
+      sum += product['price'];
     }
 
     return SizedBox(

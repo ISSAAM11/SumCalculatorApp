@@ -21,6 +21,15 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
     super.initState();
   }
 
+  removeParticipant() {
+    if (particiapntsControllerList.length > 1) {
+      particiapntsControllerList.removeLast();
+      participantsListLength--;
+      updateParticipantsList("");
+      setState(() {});
+    }
+  }
+
   addParticipant() {
     TextEditingController newParticipantCtl = TextEditingController();
     TextEditingController newParticipantAmountCtl = TextEditingController();
@@ -58,14 +67,22 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
         sum += double.parse(participant['price']!.text);
       }
 
-      if (participant["name"]!.text.isNotEmpty &&
-          participant["price"]!.text.isNotEmpty) {
-        widget.participantsList.add({
-          "participant": participant["name"]!.text,
-          "price": double.parse(participant["price"]!.text)
-        });
+      double participantAmount = 0;
+      if (participant["price"]!.text.isNotEmpty) {
+        participantAmount = double.parse(participant["price"]!.text);
       }
+      widget.participantsList.add({
+        "name": participant["name"]?.text ?? "",
+        "price": participantAmount,
+      });
     }
+    // if (participant["name"]!.text.isNotEmpty &&
+    //     participant["price"]!.text.isNotEmpty) {
+    //   widget.participantsList.add({
+    //     "participant": participant["name"]!.text,
+    //     "price": double.parse(participant["price"]!.text)
+    //   });
+    // }
     setState(() {});
   }
 
@@ -143,14 +160,24 @@ class _InsertParticipantsItemState extends State<InsertParticipantsItem> {
         child:
             Text("=  ${sum.toString()} \$", style: TextStyle(fontSize: 15.sp)),
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: ElevatedButton(
-            onPressed: () {
-              addParticipant();
-            },
-            child: Text("+ add", style: TextStyle(fontSize: 15.sp))),
-      ),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        ElevatedButton(
+          onPressed: () {
+            removeParticipant();
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 255, 228, 228)),
+          child: Text("- del",
+              style: TextStyle(
+                  fontSize: 15.sp, color: Color.fromARGB(255, 46, 21, 21))),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            addParticipant();
+          },
+          child: Text("+ add", style: TextStyle(fontSize: 15.sp)),
+        ),
+      ]),
     ]);
   }
 }

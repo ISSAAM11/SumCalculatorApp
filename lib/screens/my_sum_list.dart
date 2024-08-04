@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
@@ -6,7 +5,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:sum_calculator/Colors.dart';
 import 'package:sum_calculator/boxes/Boxes.dart';
 import 'package:sum_calculator/model/sumItem.dart';
-import 'package:sum_calculator/screens/add_sum.dart';
 
 class MySumList extends StatefulWidget {
   const MySumList({super.key});
@@ -103,7 +101,7 @@ GestureDetector sumListContainer(SumItem sumItem, BuildContext context) {
       padding: const EdgeInsets.all(10),
       width: 1000,
       margin: const EdgeInsets.only(bottom: 15),
-      height: 80,
+      height: 90,
       color: const Color.fromARGB(255, 243, 243, 243),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,19 +109,37 @@ GestureDetector sumListContainer(SumItem sumItem, BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(sumItem.title.toString(),
+              Text("${sumItem.title.toString()}  ",
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("${sumCount.toString()} \$",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold))
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              GestureDetector(
+                onTap: () => sumItem.delete(),
+                child: const Icon(
+                  size: 20,
+                  Icons.delete,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              )
             ],
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Total :  ${sumCount.toString()} \$",
+              style: const TextStyle(fontSize: 14),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Members: ${sumItem.participantsMap.length}"),
-              const Text("12/05/2024")
+              Text(
+                "Members: ${sumItem.participantsMap.length}",
+                style: const TextStyle(fontSize: 14),
+              ),
+              Text(
+                "${sumItem.date.year} / ${sumItem.date.month} / ${sumItem.date.day}",
+                style: const TextStyle(fontSize: 14),
+              )
             ],
           ),
         ],

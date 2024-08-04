@@ -3,29 +3,36 @@ import 'package:sum_calculator/colors.dart';
 
 class ResultItem extends StatelessWidget {
   List participantsMap;
-
-  ResultItem({super.key, required this.participantsMap});
-  int sum = 0;
+  List productsMap;
+  ResultItem(
+      {super.key, required this.participantsMap, required this.productsMap});
+  double sumParticipants = 0;
+  double sumProducts = 0;
 
   @override
   Widget build(BuildContext context) {
+    for (var product in productsMap) {
+      sumProducts += product['price'];
+    }
+
     for (var participant in participantsMap) {
-      sum += participant['price'] as int;
+      sumParticipants += participant['price'];
     }
     return SizedBox(
-      height: participantsMap.length * 20 + 50,
+      height: participantsMap.length * 23 + 50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Your participants list ',
+          const Text('Result',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           const SizedBox(height: 15),
           Flexible(
             child: ListView.builder(
               itemCount: participantsMap.length,
               itemBuilder: (context, index) {
-                final participantAmount = (sum / participantsMap.length -
-                    participantsMap[index]['price']);
+                final participantAmount =
+                    (sumParticipants / participantsMap.length -
+                        participantsMap[index]['price']);
                 return SizedBox(
                   height: 22,
                   child: Row(
@@ -33,7 +40,7 @@ class ResultItem extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "${participantsMap[index]['participant']} ",
+                          text: "${participantsMap[index]['name']} ",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -70,7 +77,7 @@ class ResultItem extends StatelessWidget {
                                         ? Colors.red
                                         : yellowColor,
                                     fontWeight: FontWeight.w800)),
-                            TextSpan(text: "  =  $sum \$")
+                            TextSpan(text: "  =  $sumParticipants \$")
                           ],
                         ),
                       ),

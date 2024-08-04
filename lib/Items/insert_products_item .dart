@@ -21,6 +21,15 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
     super.initState();
   }
 
+  removeProduct() {
+    if (productsControllerList.length > 1) {
+      productsControllerList.removeLast();
+      productsListLength--;
+      updateProductList("");
+      setState(() {});
+    }
+  }
+
   addProduct() {
     TextEditingController newProductCtl = TextEditingController();
     TextEditingController newProductAmountCtl = TextEditingController();
@@ -48,14 +57,14 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
         sum += double.parse(product['price']!.text);
       }
 
-      if (product["name"]!.text.isNotEmpty &&
-          product["price"]!.text.isNotEmpty) {
-        widget.productList.add({
-          "name": product["name"]!.text,
-          "price": double.parse(product["price"]!.text),
-        });
-        //[product["name"]!.text] = double.parse(product["price"]!.text)
+      double productPrice = 0;
+      if (product["price"]!.text.isNotEmpty) {
+        productPrice = double.parse(product["price"]!.text);
       }
+      widget.productList.add({
+        "name": product["name"]?.text ?? "",
+        "price": productPrice,
+      });
     }
     setState(() {});
   }
@@ -135,14 +144,26 @@ class _InsertProductsItemState extends State<InsertProductsItem> {
         child:
             Text("=  ${sum.toString()} \$", style: TextStyle(fontSize: 15.sp)),
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: ElevatedButton(
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        ElevatedButton(
+          onPressed: () {
+            removeProduct();
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 255, 228, 228)),
+          child: Text("- del",
+              style: TextStyle(
+                  fontSize: 15.sp, color: Color.fromARGB(255, 46, 21, 21))),
+        ),
+        ElevatedButton(
             onPressed: () {
               addProduct();
             },
             child: Text("+ add", style: TextStyle(fontSize: 15.sp))),
-      ),
+      ]),
+      SizedBox(
+        height: 10.h,
+      )
     ]);
   }
 }

@@ -46,7 +46,9 @@ class _SumResultState extends State<SumResult> {
             YourProductsItem(productsMap: widget.sumItem.productsMap),
             YourParticipantsItem(
                 participantsMap: widget.sumItem.participantsMap),
-            ResultItem(participantsMap: widget.sumItem.participantsMap),
+            ResultItem(
+                participantsMap: widget.sumItem.participantsMap,
+                productsMap: widget.sumItem.productsMap),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

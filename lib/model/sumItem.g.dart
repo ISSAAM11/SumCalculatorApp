@@ -24,19 +24,22 @@ class SumItemAdapter extends TypeAdapter<SumItem> {
       participantsMap: (fields[2] as List)
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
+      date: fields[3] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, SumItem obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.productsMap)
       ..writeByte(2)
-      ..write(obj.participantsMap);
+      ..write(obj.participantsMap)
+      ..writeByte(3)
+      ..write(obj.date);
   }
 
   @override

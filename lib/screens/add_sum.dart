@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sum_calculator/Colors.dart';
 import 'package:sum_calculator/Items/insert_participants_item.dart';
-import 'package:sum_calculator/Items/insert_products_item%20copy.dart';
+import 'package:sum_calculator/Items/insert_products_item%20.dart';
 import 'package:sum_calculator/boxes/Boxes.dart';
 import 'package:sum_calculator/model/sumItem.dart';
 
@@ -28,11 +28,36 @@ class _MyWidgetState extends State<AddSum> {
       setState(() {});
       return;
     }
+
+    for (Map product in productList) {
+      if ((product["name"]!.isEmpty)) {
+        textError = "Complete the product name";
+        setState(() {});
+        return;
+      }
+      if ((product["price"] == 0)) {
+        textError = "Complete the product price";
+        setState(() {});
+        return;
+      }
+    }
+    for (Map participant in participantsList) {
+      if ((participant["name"]!.isEmpty)) {
+        textError = "Complete the participant name";
+        setState(() {});
+        return;
+      }
+      if ((participant["price"] == 0)) {
+        textError = "Complete the participant amount";
+        setState(() {});
+        return;
+      }
+    }
     sumItem = SumItem(
-      title: titleController.text,
-      productsMap: productList,
-      participantsMap: participantsList,
-    );
+        title: titleController.text,
+        productsMap: productList,
+        participantsMap: participantsList,
+        date: DateTime.now());
     final sumBox = Boxes.getSumItems();
     sumBox.add(sumItem);
     GoRouter.of(context).go('/SumResult', extra: sumItem);
@@ -42,6 +67,10 @@ class _MyWidgetState extends State<AddSum> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => GoRouter.of(context).go('/'),
+            color: Colors.white,
+          ),
           backgroundColor: yellowColor,
           title: const Text('Calculate your sum ',
               style: TextStyle(
@@ -65,7 +94,7 @@ class _MyWidgetState extends State<AddSum> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const Divider(),
               const Text('Title: ',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 45.0,
                 child: TextFormField(
@@ -88,7 +117,7 @@ class _MyWidgetState extends State<AddSum> {
                 child: Text(textError,
                     style: const TextStyle(fontSize: 15, color: Colors.red)),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
