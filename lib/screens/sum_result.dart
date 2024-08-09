@@ -49,7 +49,7 @@ class _SumResultState extends State<SumResult> {
             ResultItem(
                 participantsMap: widget.sumItem.participantsMap,
                 productsMap: widget.sumItem.productsMap),
-            // git khalil commit
+            // new git push
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
