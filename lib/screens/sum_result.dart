@@ -50,6 +50,7 @@ class _SumResultState extends State<SumResult> {
                 participantsMap: widget.sumItem.participantsMap,
                 productsMap: widget.sumItem.productsMap),
             // new git push
+            // this is new change of issam branch
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
