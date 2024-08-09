@@ -51,7 +51,6 @@ class _SumResultState extends State<SumResult> {
                 productsMap: widget.sumItem.productsMap),
             // new git push
             // this is new change of issam branch
-            // this a second stash test to stwitch between stash test
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
