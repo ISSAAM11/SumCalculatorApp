@@ -1,16 +1,16 @@
-# sum_calculator
+# Calculate Your Sum
 
-A new Flutter project.
+**Calculate Your Sum** is a Flutter mobile app that helps users quickly split shared costs (e.g., groceries, gifts, outings). It automatically calculates individual shares, tracks what each person owes, and allows rebalancing payments when one person covers the full amount. The app uses **Hive** as a local NoSQL database.
 
-## Getting Started
+## Features
+- Easy input of contributions
+- Automatic share calculation
+- Real-time balance tracking
+- Payment rebalancing
 
-This project is a starting point for a Flutter application.
+## Tech Stack
+- **Flutter**: Mobile app framework
+- **Hive**: Local NoSQL database
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Portfolio
+For more details, visit my portfolio: [My Portfolio - Share Money Split](https://issambh.wixsite.com/portfolio/portfolio-collections/my-portfolio/share-money-split)
